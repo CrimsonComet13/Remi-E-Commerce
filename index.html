@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tienda - Reminiscencia Photography</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary-dark: #0a0a0a;
+      --secondary-dark: #1a1a1a;
+      --tertiary-dark: #2a2a2a;
+      --light-bg: #fafafa;
+      --accent-gold: #d4af37;
+      --accent-gold-hover: #b8941f;
+      --accent-purple: #8b5a96;
+      --text-muted: #6c757d;
+      --border-light: rgba(255,255,255,0.1);
+      --glass-bg: rgba(255,255,255,0.05);
+      --shadow-soft: 0 20px 60px rgba(0,0,0,0.1);
+      --shadow-hover: 0 30px 80px rgba(0,0,0,0.15);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: linear-gradient(135deg, var(--light-bg) 0%, #f0f2f5 100%);
+      color: var(--secondary-dark);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    
+    /* Navbar */
+    .navbar {
+      background: rgba(10, 10, 10, 0.95) !important;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+    
+    .navbar-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff, var(--accent-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .nav-link {
+      color: white !important;
+      font-weight: 500;
+      padding: 10px 18px !important;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-link:hover {
+      color: var(--accent-gold) !important;
+      background: var(--glass-bg);
+      transform: translateY(-2px);
+    }
+    
+    /* Cart Icon */
+    .cart-icon {
+      position: relative;
+      font-size: 1.5rem;
+      color: var(--accent-gold);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .cart-icon:hover {
+      transform: scale(1.1);
+    }
+    
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--accent-gold);
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, rgba(10, 10, 10, 0.8) 0%, rgba(139, 90, 150, 0.4) 100%),
+                  url('https://images.unsplash.com/photo-1542038784456-1ea8e935640e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+      background-size: cover;
+      background-position: center;
+      height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+    }
+    
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #fff 0%, var(--accent-gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    /* Store Section */
+    .store-section {
+      padding: 5rem 0;
+      background: white;
+    }
+    
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      position: relative;
+      padding-bottom: 1rem;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-gold), var(--accent-purple));
+    }
+    
+    /* Category Filter */
+    .category-filter {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+    
+    .filter-btn {
+      padding: 10px 25px;
+      border: 2px solid var(--accent-gold);
+      background: transparent;
+      color: var(--accent-gold);
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+    
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--accent-gold);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
+    }
+    
+    /* Product Grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .product-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+      transition: all 0.4s ease;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    
+    .product-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-hover);
+    }
+    
+    .product-image {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    
+    .product-card:hover .product-image {
+      transform: scale(1.05);
+    }
+    
+    .product-info {
+      padding: 1.5rem;
+    }
+    
+    .product-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--primary-dark);
+    }
+    
+    .product-event {
+      color: var(--accent-purple);
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    
+    .product-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+      margin-bottom: 1rem;
+    }
+    
+    .add-to-cart {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-hover));
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .add-to-cart:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+    }
+    
+    /* Cart Sidebar */
+    .cart-sidebar {
+      position: fixed;
+      right: -400px;
+      top: 0;
+      width: 400px;
+      height: 100vh;
+      background: white;
+      box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+      transition: right 0.4s ease;
+      z-index: 1050;
+      overflow-y: auto;
+    }
+    
+    .cart-sidebar.open {
+      right: 0;
+    }
+    
+    .cart-header {
+      padding: 2rem;
+      background: var(--primary-dark);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .cart-header h3 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    
+    .close-cart {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    
+    .close-cart:hover {
+      transform: scale(1.2);
+    }
+    
+    .cart-items {
+      padding: 1rem;
+    }
+    
+    .cart-item {
+      display: flex;
+      padding: 1rem;
+      border-bottom: 1px solid #eee;
+      align-items: center;
+    }
+    
+    .cart-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-right: 1rem;
+    }
+    
+    .cart-item-info {
+      flex: 1;
+    }
+    
+    .cart-item-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .cart-item-price {
+      color: var(--accent-gold);
+      font-weight: 600;
+    }
+    
+    .cart-item-quantity {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    
+    .quantity-btn {
+      background: var(--accent-gold);
+      color: white;
+      border: none;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+    
+    .remove-item {
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      margin-left: 1rem;
+    }
+    
+    .cart-total {
+      padding: 2rem;
+      background: var(--light-bg);
+      border-top: 1px solid #eee;
+    }
+    
+    .total-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+      margin-bottom: 1rem;
+    }
+    
+    .checkout-btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-hover));
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .checkout-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+    }
+    
+    /* Cart Overlay */
+    .cart-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1040;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .cart-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    /* Empty Cart */
+    .empty-cart {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: var(--text-muted);
+    }
+    
+    .empty-cart i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+      }
+      
+      .cart-sidebar {
+        width: 100%;
+        right: -100%;
+      }
+      
+      .category-filter {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .filter-btn {
+        width: 200px;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .hero {
+        height: 50vh;
+      }
+      
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .store-section {
+        padding: 3rem 0;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
+      
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Event Category Sections */
+    .event-category {
+      margin-bottom: 4rem;
+    }
+    
+    .category-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--accent-purple);
+    }
+    
+    .category-icon {
+      font-size: 2rem;
+      color: var(--accent-purple);
+      margin-right: 1rem;
+    }
+    
+    .category-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#home">Reminiscencia Photography</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#home">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#tienda">Tienda</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#contacto">Contacto</a>
+          </li>
+        </ul>
+        <div class="d-flex align-items-center">
+          <div class="cart-icon me-3" id="cart-icon">
+            <i class="bi bi-bag"></i>
+            <span class="cart-count" id="cart-count">0</span>
+          </div>
+          <a href="#" class="btn btn-outline-light btn-sm">
+            <i class="bi bi-person"></i> Mi Cuenta
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="container">
+      <h1>Tienda de Fotografías</h1>
+      <p class="lead">Encuentra y compra las mejores fotografías de tus eventos especiales</p>
+    </div>
+  </section>
+
+  <!-- Store Section -->
+  <section id="tienda" class="store-section">
+    <div class="container">
+      <h2 class="section-title">Nuestras Fotografías</h2>
+      
+      <!-- Category Filter -->
+      <div class="category-filter">
+        <button class="filter-btn active" data-category="all">Todas</button>
+        <button class="filter-btn" data-category="bodas">Bodas</button>
+        <button class="filter-btn" data-category="xv-anos">XV Años</button>
+        <button class="filter-btn" data-category="bautizos">Bautizos</button>
+        <button class="filter-btn" data-category="cumpleanos">Cumpleaños</button>
+        <button class="filter-btn" data-category="graduaciones">Graduaciones</button>
+        <button class="filter-btn" data-category="corporativos">Eventos Corporativos</button>
+      </div>
+      
+      <!-- Bodas -->
+      <div class="event-category" data-category="bodas">
+        <div class="category-header">
+          <i class="bi bi-hearts category-icon"></i>
+          <h3 class="category-title">Bodas</h3>
+        </div>
+        <div class="product-grid">
+          <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Momento del Sí Quiero" class="product-image">
+            <div class="product-info">
+              <h3 class="product-title">Momento del Sí Quiero</h3>
+              <p class="product-event">Bodas</p>
+              <p class="product-price">$150</p>
+              <button class="add-to-cart" data-id="1">Añadir al Carrito</button>
+            </div>
+          </div>
+          
+          <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Primer Baile" class="product-image">
+            <div class="product-info">
+              <h3 class="product-title">Primer Baile</h3>
+              <p class="product-event">Bodas</p>
+              <p class="product-price">$120</p>
+              <button class="add-to-cart" data-id="2">Añadir al Carrito</button>
+            </div>
+          </div>
+          
+          <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Ceremonia Religiosa" class="product-image">
+            <div class="product-info">
+              <h3 class="product-title">Ceremonia Religiosa</h3>
+              <p class="product-event">Bodas</p>
+              <p class="product-price">$180</p>
+              <button class="add-to-cart" data-id="3">Añadir al Carrito</button>
+            </div>
+          </div>
+          
+          <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Intercambio de Anillos" class="product-image">
+            <div class="product-info">
+              <h3 class="product-title">Intercambio de Anillos</h3>
+              <p class="product-event">Bodas</p>
+              <p class="product-price">$200</p>
+              <button class="add-to-cart" data-id="4">Añadir al Carrito</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- XV Años -->
+      <div class="event-category" data-category="xv-anos">
+        <div class="category-header">
+          <i class="bi bi-stars category-icon"></i>
+          <h3 class="category-title">XV Años</h3>
+        </div>
+        <div class="product-grid">
+          <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1520637836862-4d197d17c93a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Vals de la Quinceañera" class="product-image">
+            <div class="product-info">
+              <h3 class="product-title">Vals de la Quinceañera</h3>
+              <p class="product-event">XV Años</p>
+              <p class="product-price">$100</p>
+              <button class="add-to-cart" data-id="5">Añadir al Carrito</button>
+            </div>
+          </div>
+          
+          <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Misa de Acción de Gracias" class="product-image">
+            <div class="product-info">
+              <h3 class="product-title">Misa de Acción de Gracias</h3>
+              <p class="product-event">XV Años</p>
+              <p class="product-price">$80</p>
+              <button class="add-to-cart" data-id="6">Añadir al Carrito</button>
+            </div>
+          </div>
+          
+          <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Momento de la Corona" class="product-image">
+            <div class="product-info">
+              <h3 class="product-title">Momento de la Corona</h3>
+              <p class="product-event">XV Años</p>
+              <p class="product-price">$90</p>
+              <button class="add-to-cart" data-id="7">Añadir al Carrito</button>
+            </div>
+          </div>
+          
+          <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1502686788966-615c17d7e52d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Sesión de Fotos" class="product-image">
+            <div class="product-info">
+              <h3 class="product-title">Sesión de Fotos</h3>
+              <p class="product-event">XV Años</p>
+              <p class="product-price">$70</p>
+              <button class="add-to-cart" data-id="8">Añadir al Carrito</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Bautizos -->
+      <div class="event-category" data-category="bautizos">
+        <div class="category-header">
+          <i class="bi bi-droplet category-icon"></i>
+          <h3 class="category-title">Bautizos</h3>
+        </div>
+        <div class="product-grid">
+          <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1544198365-f5d60b6d8190?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Ceremonia de Bautizo" class="product-image">
+            <div class="product-info">
+              <h3 class="product-title">Ceremonia de Bautizo</h3>
+              <p class="product-event">Bautizos</p>
+              <p class="product-price">$60</p>
+              <button class="add-to-cart" data-id="9">Añadir al Carrito</button>
+            </div>
+          </div>
+          
+          <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1530841344095-6b5fcc32b5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Momento del Agua Bendita" class="product-image">
+            <div class="product-info">
+              <h3 class="product-title">Momento del Agua Bendita</h3>
+              <p class="product-event">Bautizos</p>
+              <p class="product-price">$50</p>
+              <button class="add-to-cart" data-id="10">Añadir al Carrito</button>
+            </div>
+          </div>
+          
+          <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Familia Reunida" class="product-image">
+            <div class="product-info">
+              <h3 class="product-title">Familia Reunida</h3>
+              <p class="product-event">Bautizos</p>
+              <p class="product-price">$70</p>
+              <button class="add-to-cart" data-id="11">Añadir al Carrito</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Cumpleaños -->
+      <div class="event-category" data-category="cumpleanos">
+        <div class="category-header">
+          <i class="bi bi-gift category-icon"></i>
+          <h3 class="category-title">Cumpleaños</h3>
+        </div>
+        <div class="product-grid">
+          <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1558618047-fcd4c3d5c2f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Soplando las Velas" class="product-image">
+            <div class="product-info">
+              <h3 class="product-title">Soplando las Velas</h3>
+              <p class="product-event">Cumpleaños</p>
+              <p class="product-price">$40</p>
+              <button class="add-to-cart" data-id="12">Añadir al Carrito</button>
+            </div>
+          </div>
+          
+          <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1464047736614-af63643285bf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Fiesta de Cumpleaños" class="product-image">
+            <div class="product-info">
+              <h3 class="product-title">Fiesta de Cumpleaños</h3>
+              <p class="product-event">Cumpleaños</p>
+              <p class="product-price">$45</p>
+              <button class="add-to-cart" data-id="13">Añadir al Carrito</button>
+            </div>
+          </div>
+          
+          <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Momento de Alegría" class="product-image">
+            <div class="product-info">
+              <h3 class="product-title">Momento de Alegría</h3>
+              <p class="product-event">Cumpleaños</p>
+              <p class="product-price">$35</p>
+              <button class="add-to-cart" data-id="14">Añadir al Carrito</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Graduaciones -->
+      <div class="event-category" data-category="graduaciones">
+        <div class="category-header">
+          <i class="bi bi-mortarboard category-icon"></i>
+          <h3 class="category-title">Graduaciones</h3>
+        </div>
+        <div class="product-grid">
+          <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Ceremonia de Graduación" class="product-image">
+            <div class="product-info">
+              <h3 class="product-title">Ceremonia de Graduación</h3>
+              <p class="product-event">Graduaciones</p>
+              <p class="product-price">$80</p>
+              <button class="add-to-cart" data-id="15">Añadir al Carrito</button>
+            </div>
+          </div>
+          
+          <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Lanzamiento de Birretes" class="product-image">
+            <div class="product-info">
+              <h3 class="product-title">Lanzamiento de Birretes</h3>
+              <p class="product-event">Graduaciones</p>
+              <p class="product-price">$60</p>
+              <button class="add-to-cart" data-id="16">Añadir al Carrito</button>
+            </div>
+          </div>
+          
+          <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1607013251379-e6eecfffe234?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Entrega de Diplomas" class="product-image">
+            <div class="product-info">
+              <h3 class="product-title">Entrega de Diplomas</h3>
+              <p class="product-event">Graduaciones</p>
+              <p class="product-price">$90</p>
+              <button class="add-to-cart" data-id="17">Añadir al Carrito</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Eventos Corporativos -->
+      <div class="event-category" data-category="corporativos">
+        <div class="category-header">
+          <i class="bi bi-briefcase category-icon"></i>
+          <h3 class="category-title">Eventos Corporativos</h3>
+        </div>
+        <div class="product-grid">
+          <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Conferencia Empresarial" class="product-image">
+            <div class="product-info">
+              <h3 class="product-title">Conferencia Empresarial</h3>
+              <p class="product-event">Eventos Corporativos</p>
+              <p class="product-price">$120</p>
+              <button class="add-to-cart" data-id="18">Añadir al Carrito</button>
+            </div>
+          </div>
+          
+          <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Evento de Networking" class="product-image">
+            <div class="product-info">
+              <h3 class="product-title">Evento de Networking</h3>
+              <p class="product-event">Eventos Corporativos</p>
+              <p class="product-price">$100</p>
+              <button class="add-to-cart" data-id="19">Añadir al Carrito</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cart Sidebar -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <div class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+      <h3>Mi Carrito</h3>
+      <button class="close-cart" id="close-cart">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+    <div class="cart-items" id="cart-items">
+      <!-- Cart items will be populated by JavaScript -->
+      <div class="empty-cart">
+        <i class="bi bi-cart-x"></i>
+        <h4>Tu carrito está vacío</h4>
+        <p>Agrega fotografías para comenzar</p>
+      </div>
+    </div>
+    <div class="cart-total">
+      <div class="total-price">Total: $<span id="cart-total">0</span></div>
+      <button class="checkout-btn" id="checkout-btn">
+        <i class="bi bi-credit-card"></i> Proceder al Pago
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="py-4 bg-dark text-white">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <h5>Reminiscencia Photography</h5>
+          <p class="text-muted">Capturando momentos inolvidables desde 2010</p>
+        </div>
+        <div class="col-md-4 mb-3">
+          <h5>Contacto</h5>
+          <ul class="list-unstyled">
+            <li><i class="bi bi-envelope me-2"></i> info@reminiscencia.com</li>
+            <li><i class="bi bi-telephone me-2"></i> +52 55 1234 5678</li>
+            <li><i class="bi bi-geo-alt me-2"></i> Ciudad de México</li>
+          </ul>
+        </div>
+        <div class="col-md-4 mb-3">
+          <h5>Síguenos</h5>
+          <div class="d-flex gap-3">
+            <a href="#" class="text-white"><i class="bi bi-facebook fs-4"></i></a>
+            <a href="#" class="text-white"><i class="bi bi-instagram fs-4"></i></a>
+            <a href="#" class="text-white"><i class="bi bi-twitter-x fs-4"></i></a>
+            <a href="#" class="text-white"><i class="bi bi-pinterest fs-4"></i></a>
+          </div>
+        </div>
+      </div>
+      <hr class="my-4">
+      <p class="text-center text-muted">&copy; 2023 Reminiscencia Photography. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    // Cart functionality
+    let cart = [];
+    const cartCount = document.getElementById('cart-count');
+    const cartItems = document.getElementById('cart-items');
+    const cartTotal = document.getElementById('cart-total');
+    const cartSidebar = document.getElementById('cart-sidebar');
+    const cartOverlay = document.getElementById('cart-overlay');
+    const cartIcon = document.getElementById('cart-icon');
+    const closeCart = document.getElementById('close-cart');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    
+    // Product data
+    const products = [
+      // Bodas
+      { id: 1, title: "Momento del Sí Quiero", category: "bodas", price: 150, image: "https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" },
+      { id: 2, title: "Primer Baile", category: "bodas", price: 120, image: "https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" },
+      { id: 3, title: "Ceremonia Religiosa", category: "bodas", price: 180, image: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" },
+      { id: 4, title: "Intercambio de Anillos", category: "bodas", price: 200, image: "https://images.unsplash.com/photo-1606800052052-a08af7148866?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" },
+      
+      // XV Años
+      { id: 5, title: "Vals de la Quinceañera", category: "xv-anos", price: 100, image: "https://images.unsplash.com/photo-1520637836862-4d197d17c93a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" },
+      { id: 6, title: "Misa de Acción de Gracias", category: "xv-anos", price: 80, image: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" },
+      { id: 7, title: "Momento de la Corona", category: "xv-anos", price: 90, image: "https://images.unsplash.com/photo-1469371670807-013ccf25f16a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" },
+      { id: 8, title: "Sesión de Fotos", category: "xv-anos", price: 70, image: "https://images.unsplash.com/photo-1502686788966-615c17d7e52d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" },
+      
+      // Bautizos
+      { id: 9, title: "Ceremonia de Bautizo", category: "bautizos", price: 60, image: "https://images.unsplash.com/photo-1544198365-f5d60b6d8190?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" },
+      { id: 10, title: "Momento del Agua Bendita", category: "bautizos", price: 50, image: "https://images.unsplash.com/photo-1530841344095-6b5fcc32b5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" },
+      { id: 11, title: "Familia Reunida", category: "bautizos", price: 70, image: "https://images.unsplash.com/photo-1511895426328-dc8714191300?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" },
+      
+      // Cumpleaños
+      { id: 12, title: "Soplando las Velas", category: "cumpleanos", price: 40, image: "https://images.unsplash.com/photo-1558618047-fcd4c3d5c2f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" },
+      { id: 13, title: "Fiesta de Cumpleaños", category: "cumpleanos", price: 45, image: "https://images.unsplash.com/photo-1464047736614-af63643285bf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" },
+      { id: 14, title: "Momento de Alegría", category: "cumpleanos", price: 35, image: "https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" },
+      
+      // Graduaciones
+      { id: 15, title: "Ceremonia de Graduación", category: "graduaciones", price: 80, image: "https://images.unsplash.com/photo-1523050854058-8df90110c9d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" },
+      { id: 16, title: "Lanzamiento de Birretes", category: "graduaciones", price: 60, image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" },
+      { id: 17, title: "Entrega de Diplomas", category: "graduaciones", price: 90, image: "https://images.unsplash.com/photo-1607013251379-e6eecfffe234?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" },
+      
+      // Eventos Corporativos
+      { id: 18, title: "Conferencia Empresarial", category: "corporativos", price: 120, image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" },
+      { id: 19, title: "Evento de Networking", category: "corporativos", price: 100, image: "https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" }
+    ];
+    
+    // Toggle cart visibility
+    function toggleCart() {
+      cartSidebar.classList.toggle('open');
+      cartOverlay.classList.toggle('active');
+    }
+    
+    // Add to cart
+    function addToCart(productId) {
+      const product = products.find(p => p.id === productId);
+      const existingItem = cart.find(item => item.id === productId);
+      
+      if (existingItem) {
+        existingItem.quantity++;
+      } else {
+        cart.push({
+          ...product,
+          quantity: 1
+        });
+      }
+      
+      updateCart();
+    }
+    
+    // Remove from cart
+    function removeFromCart(productId) {
+      cart = cart.filter(item => item.id !== productId);
+      updateCart();
+    }
+    
+    // Update quantity
+    function updateQuantity(productId, change) {
+      const item = cart.find(item => item.id === productId);
+      
+      if (item) {
+        item.quantity += change;
+        
+        if (item.quantity <= 0) {
+          removeFromCart(productId);
+        } else {
+          updateCart();
+        }
+      }
+    }
+    
+    // Update cart UI
+    function updateCart() {
+      // Update cart count
+      const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+      cartCount.textContent = totalItems;
+      
+      // Update cart items
+      if (cart.length === 0) {
+        cartItems.innerHTML = `
+          <div class="empty-cart">
+            <i class="bi bi-cart-x"></i>
+            <h4>Tu carrito está vacío</h4>
+            <p>Agrega fotografías para comenzar</p>
+          </div>
+        `;
+      } else {
+        cartItems.innerHTML = cart.map(item => `
+          <div class="cart-item">
+            <img src="${item.image}" alt="${item.title}">
+            <div class="cart-item-info">
+              <div class="cart-item-title">${item.title}</div>
+              <div class="cart-item-price">$${item.price} x ${item.quantity}</div>
+              <div class="cart-item-quantity">
+                <button class="quantity-btn minus" data-id="${item.id}">-</button>
+                <span class="quantity">${item.quantity}</span>
+                <button class="quantity-btn plus" data-id="${item.id}">+</button>
+                <button class="remove-item" data-id="${item.id}">Eliminar</button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+      
+      // Update total
+      const total = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+      cartTotal.textContent = total.toFixed(2);
+      
+      // Add event listeners to cart buttons
+      document.querySelectorAll('.minus').forEach(button => {
+        button.addEventListener('click', () => {
+          updateQuantity(parseInt(button.dataset.id), -1);
+        });
+      });
+      
+      document.querySelectorAll('.plus').forEach(button => {
+        button.addEventListener('click', () => {
+          updateQuantity(parseInt(button.dataset.id), 1);
+        });
+      });
+      
+      document.querySelectorAll('.remove-item').forEach(button => {
+        button.addEventListener('click', () => {
+          removeFromCart(parseInt(button.dataset.id));
+        });
+      });
+    }
+    
+    // Checkout function
+    function checkout() {
+      if (cart.length === 0) {
+        alert('Tu carrito está vacío. Agrega productos antes de proceder al pago.');
+        return;
+      }
+      
+      alert('¡Gracias por tu compra! Redirigiendo al proceso de pago...');
+      // In a real implementation, you would redirect to a payment gateway
+      cart = [];
+      updateCart();
+      toggleCart();
+    }
+    
+    // Filter products by category
+    function filterProducts(category) {
+      const categories = document.querySelectorAll('.event-category');
+      
+      if (category === 'all') {
+        categories.forEach(cat => {
+          cat.style.display = 'block';
+        });
+      } else {
+        categories.forEach(cat => {
+          if (cat.dataset.category === category) {
+            cat.style.display = 'block';
+          } else {
+            cat.style.display = 'none';
+          }
+        });
+      }
+    }
+    
+    // Event Listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      // Add to cart buttons
+      document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', () => {
+          const productId = parseInt(button.dataset.id);
+          addToCart(productId);
+          
+          // Show success message
+          const originalText = button.textContent;
+          button.textContent = '✓ Añadido';
+          button.style.backgroundColor = '#28a745';
+          
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.style.backgroundColor = '';
+          }, 2000);
+        });
+      });
+      
+      // Filter buttons
+      document.querySelectorAll('.filter-btn').forEach(button => {
+        button.addEventListener('click', () => {
+          // Remove active class from all buttons
+          document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+          });
+          
+          // Add active class to clicked button
+          button.classList.add('active');
+          
+          // Filter products
+          filterProducts(button.dataset.category);
+        });
+      });
+      
+      // Cart toggle
+      cartIcon.addEventListener('click', toggleCart);
+      closeCart.addEventListener('click', toggleCart);
+      cartOverlay.addEventListener('click', toggleCart);
+      
+      // Checkout button
+      checkoutBtn.addEventListener('click', checkout);
+    });
+  </script>
+</body>
+</html>
